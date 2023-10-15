@@ -1,4 +1,4 @@
-add_library(callme)
+add_library(callme ${CALLME_TARGET_TYPE})
 add_library(callme::callme ALIAS callme)
 
 set(CALLME_DIR ${CMAKE_CURRENT_LIST_DIR})

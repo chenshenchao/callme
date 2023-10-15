@@ -4,6 +4,12 @@ cmake_minimum_required(VERSION 3.24)
 option(CALLME_BUILD_EXAMPLES "build callme examples." OFF)
 option(CALLME_STATIC "build callme static" OFF)
 
+if (CALLME_STATIC)
+    set(CALLME_TARGET_TYPE "STATIC")
+else()
+    set(CALLME_TARGET_TYPE "SHARED")
+endif()
+
 project(callme CXX)
 message(STATUS "[callme] project cxx")
 

@@ -1,0 +1,9 @@
+import os;
+
+val a = 123;
+val b = 456;
+
+val r = a + b;
+
+
+os.print($"a + b = {r}");

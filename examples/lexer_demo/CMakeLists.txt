@@ -14,3 +14,9 @@ set_target_properties(
 )
 
 target_link_libraries(lexer_demo callme::callme)
+
+add_custom_command(
+    TARGET lexer_demo
+    POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" "-E" "copy_directory" "${CALLME_EXAMPLES_ASSETS_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+)

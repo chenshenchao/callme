@@ -15,6 +15,11 @@
           "name": "CALLME_BUILD_EXAMPLES",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "CALLME_STATIC",
+          "value": "True",
+          "type": "BOOL"
         }
       ]
     },

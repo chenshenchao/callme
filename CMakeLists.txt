@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.24)
+﻿cmake_minimum_required(VERSION 3.24)
 
 # 选项
 option(CALLME_BUILD_EXAMPLES "build callme examples." OFF)
-option(CALLME_STATIC "build callme static" OFF)
+option(CALLME_STATIC "build callme static" ON)
 
 include("cmake/AsmJit.cmake")
 

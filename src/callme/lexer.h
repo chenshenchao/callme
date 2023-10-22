@@ -6,7 +6,8 @@
 
 namespace callme {
     struct lexer {
-        CALLME_API lexeme *pop_lexeme();
+        virtual ~lexer() noexcept {};
+        virtual lexeme* pop_lexeme() = 0;
     };
 
     CALLME_API lexer* new_lexer(const char *script);

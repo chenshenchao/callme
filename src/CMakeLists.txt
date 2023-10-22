@@ -8,7 +8,7 @@ set_target_properties(
 	callme
 	PROPERTIES
 	LINKER_LANGUAGE CXX
-    CXX_STANDARD 11
+    CXX_STANDARD 20
 )
 
 if (CALLME_STATIC)

@@ -10,7 +10,7 @@ set_target_properties(
 	parser_demo
 	PROPERTIES
 	LINKER_LANGUAGE CXX
-    CXX_STANDARD 11
+    CXX_STANDARD 20
 )
 
 target_link_libraries(

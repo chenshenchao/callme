@@ -1,4 +1,4 @@
-import os;
+﻿import os;
 
-os.print($"命令行参数个数: {os.ARGC}");
-os.print($"命令行参数: {os.ARGV}");
+os.print("命令行参数个数: {}", os.ARGC);
+os.print("命令行参数: {}", os.ARGV);

@@ -8,5 +8,7 @@ int main() {
 
     std::unique_ptr<lexer> lexer(new_lexer_from("simple.cm"));
 
+    lexer->pop_lexeme();
+
     return 0;
 }

@@ -1,4 +1,4 @@
-import os;
+﻿import os;
 
-os.print($"this script file path: {__FILE__}");
-os.print($"this script file dir: {__DIR__}");
+os.print("this script file path: {}", __FILE__);
+os.print("this script file dir: {}", __DIR__);

@@ -1,4 +1,4 @@
-#ifndef CALLME_TOKEN_H_INCLUDED
+﻿#ifndef CALLME_TOKEN_H_INCLUDED
 #define CALLME_TOKEN_H_INCLUDED
 
 namespace callme {
@@ -13,6 +13,11 @@ namespace callme {
         symbol_question, // ?
         symbol_dot, // .
         symbol_arrow, // ->
+        symbol_comma, // ,
+        symbol_colon, // :
+        symbol_semicolon, // ;
+        symbol_equal, // ==
+
 
         identifier, // 标识符
 

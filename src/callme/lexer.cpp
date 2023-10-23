@@ -4,10 +4,14 @@
 #include <memory>
 #include <format>
 #include <map>
+#include <set>
 #include "token.h"
 #include "error.h"
 
 namespace callme {
+    // 符号集
+    std::set<char> symbols = { '?','.',':',',',';','=','+','-','*','/','<','>','{','}','[',']','(',')' };
+
     // 关键字表
     std::map<std::string, token> keywords = {
         {"null", token::keyword_null},
@@ -22,6 +26,10 @@ namespace callme {
         {"else", token::keyword_else},
         {"loop", token::keyword_loop},
     };
+
+    inline bool is_id_start(int code) {
+        return std::isalpha(code) || code == '_';
+    }
 
     class lexer_implement : public lexer {
         int row;
@@ -59,17 +67,16 @@ namespace callme {
             }
 
             // 操作符
-            if (std::ispunct(code)) {
+            if (symbols.find(code) != symbols.end()) {
                 return pop_symbol();
             }
 
             // 标识符关键字或布尔值
-            if (std::isalpha(code)) {
+            if (is_id_start(code)) {
                 return pop_identifier();
             }
 
-            throw lexical_exception("1");
-            //throw lexical_exception(std::format("[{}, {}]  lexical_exception unknown code: {}", row, column, code).c_str());
+            throw error("[{}, {}] 未知字符: {:2x}", row, column, code);
         }
 
     private:
@@ -141,8 +148,7 @@ namespace callme {
                 }
             }
 
-            throw lexical_exception("2");
-            //throw lexical_exception(std::format("[{},{}] lexical_exception unknown code: {}", row, column, code).c_str());
+            throw error("[{},{}] 无效操作符 {:2x}", row, column, code);
         }
 
         /// <summary>
@@ -169,8 +175,7 @@ namespace callme {
                 c = stream->peek();
 
                 if (!std::isdigit(c)) {
-                    throw lexical_exception("3");
-                    //throw lexical_exception(std::format("[{},{}] lexical_exception: invalid number {}", row, column, code).c_str());
+                    throw error("[{}, {}] 无效数字 {:2x}", row, column, code);
                 }
 
                 while (std::isdigit(c)) {
@@ -189,8 +194,7 @@ namespace callme {
         /// <returns></returns>
         lexeme* pop_string() {
             if (code != '"') {
-                throw lexical_exception("4");
-                //throw lexical_exception(std::format("[{},{}] lexical_exception: invalid string {}", row, column, code).c_str());
+                throw error("[{},{}] 无效字符串 {:2x}", row, column, code);
             }
 
             std::stringstream buffer;
@@ -219,8 +223,7 @@ namespace callme {
                         code = '"';
                         break;
                     default:
-                        throw lexical_exception("6");
-                        //throw lexical_exception(std::format("[{},{}] lexical_exception: invalid convert char {}", row, column, code).c_str());
+                        throw error("[{},{}] 无效字符转义 {:2x}", row, column, code);
                     }
                 }
                 buffer << (char)code;
@@ -231,9 +234,8 @@ namespace callme {
         }
 
         lexeme* pop_identifier() {
-            if (!std::isalpha(code)) {
-                throw lexical_exception("7");
-                //throw lexical_exception(std::format("[{},{}] lexical_exception: invalid identifier {}", row, column, code).c_str());
+            if (!is_id_start(code)) {
+                throw error("[{},{}] 无效标识符 {:2x}", row, column, code);
             }
             std::stringstream buffer;
             buffer << (char)code;
@@ -271,8 +273,7 @@ namespace callme {
                         return;
                     }
                 }
-                throw lexical_exception("8");
-                //throw lexical_exception(std::format("[{},{}]lexical_exception: invalid bom {}", row, column, code).c_str());
+                throw error("[{},{}] 无效 BOM 头 {:2x}", row, column, code);
             }
 
             // 跳过空字符
@@ -309,6 +310,16 @@ namespace callme {
             else {
                 ++column;
             }
+        }
+
+        // TODO utf8 支持
+        template<class... A>
+        lexical_exception error(const std::string &fmt, A &&...args) {
+            auto message = std::vformat(fmt, std::make_format_args(args...));
+            auto m = new char[message.size() + 1];
+            std::memcpy(m, message.c_str(), message.size());
+            m[message.size()] = 0;
+            return lexical_exception(m);
         }
 
         /// <summary>

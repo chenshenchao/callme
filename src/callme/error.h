@@ -23,6 +23,9 @@ namespace callme {
     struct syntax_exception : public interpret_exception {
         syntax_exception(int code, const char* message) :
             interpret_exception(code, message) {}
+
+        syntax_exception(const char* message) :
+            interpret_exception(200, message) {}
     };
 
     struct runtime_exception: public interpret_exception {

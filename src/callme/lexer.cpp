@@ -3,6 +3,7 @@
 #include <sstream>
 #include <memory>
 #include <format>
+#include <cstring>
 #include <map>
 #include <set>
 #include "token.h"
@@ -20,6 +21,7 @@ namespace callme {
         {"return", token::keyword_return},
         {"import", token::keyword_import},
         {"export", token::keyword_export},
+        {"as", token::keyword_as},
         {"var", token::keyword_var},
         {"val", token::keyword_val},
         {"if", token::keyword_if},
@@ -32,12 +34,14 @@ namespace callme {
     }
 
     class lexer_implement : public lexer {
+        int index;
         int row;
         int column;
         int code;
         std::unique_ptr<std::istream> stream;
     public:
         lexer_implement(std::istream* stream) :
+            index(0),
             row(1),
             column(0),
             code(' '),
@@ -263,12 +267,13 @@ namespace callme {
         /// </summary>
         void skip() {
             // 跳过 BOM
-            if (code == 0xEF && row == 1 && column == 1) {
+            if (code == 0xEF && index == 1) {
                 pop_charcode();
                 if (code == 0xBB) {
                     pop_charcode();
                     if (code == 0xBF) {
                         pop_charcode();
+                        column = 1;
                         skip();
                         return;
                     }
@@ -310,6 +315,7 @@ namespace callme {
             else {
                 ++column;
             }
+            ++index;
         }
 
         // TODO utf8 支持
@@ -329,9 +335,10 @@ namespace callme {
         /// <param name="content"></param>
         /// <returns></returns>
         lexeme* new_lexeme(token token, const char* content) {
+            std::string c(content);
             return callme::new_lexeme(
                 row,
-                column,
+                column - (c == "[eof]" ? 0 : c.size() - 1),
                 token,
                 content
             );

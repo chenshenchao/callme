@@ -3,6 +3,7 @@
 
 #include "callme/error.h"
 #include "callme/lexer.h"
+#include "callme/parser.h"
 #include "callme/interpreter.h"
 
 #endif

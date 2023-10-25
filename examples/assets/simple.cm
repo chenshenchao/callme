@@ -1,9 +1,10 @@
 ﻿import os;
+import "define_variable" as dv;
 
 val a = 123;
 val b = 456;
 
-val r = a + b;
+var r = a + b;
 
 
 os.print("a + b = {}", r);

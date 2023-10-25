@@ -43,7 +43,7 @@ target_sources(
 target_include_directories(
     callme BEFORE INTERFACE
     $<BUILD_INTERFACE:${CALLME_DIR}>
-    $<INSTALL_INTERFACE:inc>
+    $<INSTALL_INTERFACE:"include">
 )
 
 # 安装生成文件
@@ -53,7 +53,7 @@ install(
 	RUNTIME DESTINATION "bin"
     ARCHIVE DESTINATION "lib"
     LIBRARY DESTINATION "bin"
-    INCLUDES DESTINATION "inc"
+    INCLUDES DESTINATION "include"
 )
 
 # 安装头文件
@@ -61,7 +61,7 @@ foreach(H_FILE_PATH ${CALLME_H_FILES})
     if (NOT ${H_FILE_PATH} MATCHES "_i\\.h$")
         get_filename_component(H_FILE_ABS_DIR ${H_FILE_PATH} PATH)
         file(RELATIVE_PATH H_FILE_DIR ${CALLME_DIR} ${H_FILE_ABS_DIR})
-        set(H_FILE_OUT_DIR "inc/${H_FILE_DIR}")
+        set(H_FILE_OUT_DIR "include/${H_FILE_DIR}")
         install(
             FILES
             ${H_FILE_PATH}

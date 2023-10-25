@@ -40,6 +40,7 @@ namespace callme {
         keyword_return, // 返回
         keyword_import, // 导入
         keyword_export, // 导出
+        keyword_as, // as
         keyword_var, // var 可变量
         keyword_val, // val 不变量
         keyword_if, // if
